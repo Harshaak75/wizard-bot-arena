@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'cinzel': ['Cinzel Decorative', 'serif'],
+				'lato': ['Lato', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,6 +66,12 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				magic: {
+					purple: '#6B46C1',
+					gold: '#F59E0B',
+					silver: '#9CA3AF',
+					dark: '#1F2937'
 				}
 			},
 			borderRadius: {
@@ -84,11 +95,40 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'magical-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 20px rgba(107, 70, 193, 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 40px rgba(107, 70, 193, 0.8)'
+					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px)'
+					},
+					'50%': {
+						transform: 'translateY(-20px)'
+					}
+				},
+				'sparkle': {
+					'0%, 100%': {
+						opacity: '0.3',
+						transform: 'scale(0.8)'
+					},
+					'50%': {
+						opacity: '1',
+						transform: 'scale(1.2)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'magical-glow': 'magical-glow 3s ease-in-out infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'sparkle': 'sparkle 2s ease-in-out infinite'
 			}
 		}
 	},

@@ -1,0 +1,30 @@
+
+[
+  {
+    "name": "mintWinningCard",
+    "type": "function",
+    "inputs": [
+      {"name": "recipient", "type": "address"},
+      {"name": "tokenURI", "type": "string"}
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "getCardsByOwner",
+    "type": "function",
+    "inputs": [{"name": "owner", "type": "address"}],
+    "outputs": [
+      {"name": "", "type": "uint256[]"},
+      {"name": "", "type": "string[]"}
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "tokenURI",
+    "type": "function",
+    "inputs": [{"name": "tokenId", "type": "uint256"}],
+    "outputs": [{"name": "", "type": "string"}],
+    "stateMutability": "view"
+  }
+]
