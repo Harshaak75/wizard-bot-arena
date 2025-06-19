@@ -1,8 +1,14 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
 import contractABI from '../contracts/WizardBet.json';
 import contractAddress from '../contracts/contract-address.json';
+
+// Extend Window interface to include ethereum
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 interface Web3ContextType {
   provider: ethers.providers.Web3Provider | null;
