@@ -1,7 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
-import { Web3Modal } from '@web3modal/ethers5';
 import contractABI from '../contracts/WizardBet.json';
 import contractAddress from '../contracts/contract-address.json';
 
@@ -16,22 +15,7 @@ interface Web3ContextType {
   disconnectWallet: () => void;
 }
 
-const Web3Context = createContext<Web3ContextType | undefined>(undefined);
-
-const projectId = 'your-walletconnect-project-id'; // In a real app, this would come from environment variables
-
-const web3Modal = new Web3Modal({
-  projectId,
-  chains: [
-    {
-      chainId: 11155111, // Sepolia testnet
-      name: 'Sepolia',
-      currency: 'ETH',
-      explorerUrl: 'https://sepolia.etherscan.io',
-      rpcUrl: 'https://sepolia.infura.io/v3/your-infura-key'
-    }
-  ]
-});
+export const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
 interface Web3ProviderProps {
   children: ReactNode;
