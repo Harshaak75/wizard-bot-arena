@@ -1,10 +1,11 @@
-
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import BotDisplay from '../components/game/BotDisplay';
-import DuelAnimation from '../components/game/DuelAnimation';
-import MintCardModal from '../components/game/MintCardModal';
-import MagicalButton from '../components/ui/MagicalButton';
+import React, { useEffect, useState } from "react";
+import Web3 from "web3";
+import { motion, AnimatePresence } from "framer-motion";
+import BotDisplay from "../components/game/BotDisplay";
+import DuelAnimation from "../components/game/DuelAnimation";
+import MintCardModal from "../components/game/MintCardModal";
+import MagicalButton from "../components/ui/MagicalButton";
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants/contract";
 
 interface Bot {
   name: string;
@@ -18,58 +19,111 @@ const bots: Bot[] = [
     name: "AlbusBot",
     power: 95,
     defense: 88,
-    spells: ["Phoenix Fire", "Elder Wand Strike", "Disarming Charm"]
+    spells: ["Phoenix Fire", "Elder Wand Strike", "Disarming Charm"],
   },
   {
     name: "VoldBot",
     power: 98,
     defense: 85,
-    spells: ["Avada Kedavra", "Horcrux Shield", "Serpent Strike"]
-  }
+    spells: ["Avada Kedavra", "Horcrux Shield", "Serpent Strike"],
+  },
 ];
 
-type GameState = 'betting' | 'dueling' | 'result';
+type GameState = "betting" | "dueling" | "result";
+
+const metadataURIs = [
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata1.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata2.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata3.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata4.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata5.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata6.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata7.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata8.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata9.json",
+  "https://gateway.pinata.cloud/ipfs/bafybeiewic5qosqz3abk2yoi5vhk745lcmbdbkt5mgf3m7gaavsbws6bay/metadata10.json",
+];
 
 const Game: React.FC = () => {
+  const [web3, setWeb3] = useState<Web3 | null>(null);
+  const [address, setAddress] = useState<string>("");
   const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
   const [betAmount, setBetAmount] = useState<number>(0);
-  const [gameState, setGameState] = useState<GameState>('betting');
+  const [gameState, setGameState] = useState<GameState>("betting");
   const [winner, setWinner] = useState<Bot | null>(null);
   const [userWon, setUserWon] = useState<boolean>(false);
   const [showMintModal, setShowMintModal] = useState<boolean>(false);
-  const [winningSpell, setWinningSpell] = useState<string>('');
+  const [winningSpell, setWinningSpell] = useState<string>("");
+
+  useEffect(() => {
+    const initWeb3 = async () => {
+      if ((window as any).ethereum) {
+        const w3 = new Web3((window as any).ethereum);
+        setWeb3(w3);
+        const accounts = await w3.eth.requestAccounts();
+        setAddress(accounts[0]);
+      } else {
+        alert("🦊 Please install MetaMask!");
+      }
+    };
+    initWeb3();
+  }, []);
 
   const handleBotSelect = (bot: Bot) => {
-    if (gameState === 'betting') {
+    if (gameState === "betting") {
       setSelectedBot(bot);
     }
   };
 
   const handleStartDuel = () => {
     if (selectedBot && betAmount > 0) {
-      setGameState('dueling');
+      setGameState("dueling");
     }
   };
 
   const handleDuelComplete = (winningBot: Bot) => {
     setWinner(winningBot);
     setUserWon(selectedBot?.name === winningBot.name);
-    setWinningSpell(winningBot.spells[Math.floor(Math.random() * winningBot.spells.length)]);
-    setGameState('result');
+    setWinningSpell(
+      winningBot.spells[Math.floor(Math.random() * winningBot.spells.length)]
+    );
+    setGameState("result");
   };
 
   const handleNewGame = () => {
     setSelectedBot(null);
     setBetAmount(0);
-    setGameState('betting');
+    setGameState("betting");
     setWinner(null);
     setUserWon(false);
     setShowMintModal(false);
-    setWinningSpell('');
+    setWinningSpell("");
   };
 
-  const handleMintCard = () => {
-    setShowMintModal(true);
+  const handleMintCard = async () => {
+    if (!web3 || !address) {
+      alert("Please connect your wallet first.");
+      return;
+    }
+
+    const randomURI =
+      metadataURIs[Math.floor(Math.random() * metadataURIs.length)];
+
+    try {
+      const contract = new web3.eth.Contract(
+        CONTRACT_ABI as any,
+        CONTRACT_ADDRESS
+      );
+      const tx = await contract.methods.mint(randomURI).send({ from: address });
+      const tokenId = tx.events.Transfer.returnValues.tokenId;
+
+      console.log("🎉 Minted Token ID:", tokenId);
+      alert(`🎉 Minted NFT with Token ID: ${tokenId}`);
+      setShowMintModal(true);
+    } catch (err: any) {
+      console.error("Minting failed:", err);
+      alert(`❌ Mint failed: ${err.message}`);
+    }
   };
 
   return (
@@ -89,7 +143,7 @@ const Game: React.FC = () => {
           </p>
         </motion.div>
 
-        {gameState === 'betting' && (
+        {gameState === "betting" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -117,7 +171,7 @@ const Game: React.FC = () => {
               <h3 className="font-cinzel font-bold text-xl text-yellow-400 mb-4 text-center">
                 Place Your Bet
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-purple-300 font-lato mb-2">
@@ -127,7 +181,7 @@ const Game: React.FC = () => {
                     type="number"
                     min="1"
                     max="1000"
-                    value={betAmount || ''}
+                    value={betAmount || ""}
                     onChange={(e) => setBetAmount(Number(e.target.value))}
                     className="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-purple-500 focus:outline-none"
                     placeholder="Enter amount..."
@@ -137,7 +191,9 @@ const Game: React.FC = () => {
                 {selectedBot && (
                   <div className="text-center p-3 bg-purple-900/30 rounded-lg border border-purple-500/20">
                     <span className="text-purple-200">Betting on: </span>
-                    <span className="text-yellow-400 font-bold">{selectedBot.name}</span>
+                    <span className="text-yellow-400 font-bold">
+                      {selectedBot.name}
+                    </span>
                   </div>
                 )}
 
@@ -154,7 +210,7 @@ const Game: React.FC = () => {
           </motion.div>
         )}
 
-        {gameState === 'result' && winner && (
+        {gameState === "result" && winner && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -174,20 +230,30 @@ const Game: React.FC = () => {
                     YOU WON!
                   </h2>
                   <p className="text-xl text-white mb-2">
-                    <span className="text-yellow-400 font-bold">{winner.name}</span> emerged victorious!
+                    <span className="text-yellow-400 font-bold">
+                      {winner.name}
+                    </span>{" "}
+                    emerged victorious!
                   </p>
                   <p className="text-lg text-purple-300">
-                    Your champion won with <span className="text-yellow-400 italic">"{winningSpell}"</span>
+                    Your champion won with{" "}
+                    <span className="text-yellow-400 italic">
+                      "{winningSpell}"
+                    </span>
                   </p>
                   <p className="text-green-300 font-bold text-lg">
                     You won {betAmount * 1.8} tokens! 💰
                   </p>
-                  
+
                   <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <MagicalButton onClick={handleMintCard} size="lg">
                       🎴 Mint Magic Card
                     </MagicalButton>
-                    <MagicalButton onClick={handleNewGame} variant="secondary" size="lg">
+                    <MagicalButton
+                      onClick={handleNewGame}
+                      variant="secondary"
+                      size="lg"
+                    >
                       🎮 New Game
                     </MagicalButton>
                   </div>
@@ -204,15 +270,21 @@ const Game: React.FC = () => {
                     YOU LOST
                   </h2>
                   <p className="text-xl text-white mb-2">
-                    <span className="text-yellow-400 font-bold">{winner.name}</span> emerged victorious!
+                    <span className="text-yellow-400 font-bold">
+                      {winner.name}
+                    </span>{" "}
+                    emerged victorious!
                   </p>
                   <p className="text-lg text-purple-300">
-                    The winner cast <span className="text-yellow-400 italic">"{winningSpell}"</span>
+                    The winner cast{" "}
+                    <span className="text-yellow-400 italic">
+                      "{winningSpell}"
+                    </span>
                   </p>
                   <p className="text-red-300 font-bold text-lg">
                     You lost {betAmount} tokens 💸
                   </p>
-                  
+
                   <MagicalButton onClick={handleNewGame} size="lg">
                     🎮 Try Again
                   </MagicalButton>
@@ -224,7 +296,7 @@ const Game: React.FC = () => {
 
         {/* Duel Animation Overlay */}
         <AnimatePresence>
-          {gameState === 'dueling' && (
+          {gameState === "dueling" && (
             <DuelAnimation
               bot1={bots[0]}
               bot2={bots[1]}
