@@ -87,7 +87,7 @@ const MagicCard: React.FC<MagicCardProps> = ({ cardData }) => {
         )}
 
         {/* Links */}
-        <div className="flex items-center space-x-4 pt-2">
+        <div className="flex items-center space-x-4 pt-2 cursor-pointer">
           {etherscanUrl && (
             <a
               href={etherscanUrl}
@@ -104,7 +104,7 @@ const MagicCard: React.FC<MagicCardProps> = ({ cardData }) => {
               href={ipfsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1 text-green-400 hover:text-green-300 text-sm transition-colors"
+              className="flex items-center space-x-1 text-green-400 hover:text-green-300 text-sm transition-colors cursor-pointer"
             >
               <FiExternalLink size={14} />
               <span>IPFS</span>

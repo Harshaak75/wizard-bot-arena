@@ -11,23 +11,94 @@ interface Bot {
   name: string;
   power: number;
   defense: number;
+  img: string;
+  staticImg:string;
   spells: string[];
 }
 
 const bots: Bot[] = [
-  {
-    name: "AlbusBot",
-    power: 95,
-    defense: 88,
-    spells: ["Phoenix Fire", "Elder Wand Strike", "Disarming Charm"],
+    {
+    name: "Harry Potter",
+    power: 99,
+    defense: 95,
+    staticImg:"https://sm.ign.com/t/ign_in/cover/h/harry-pott/harry-potter-the-series_598w.600.jpg",
+    img:"https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGZndHZ0Z2p4OGs1MndxdnBkcDIxZDBkczQ3cGt2b2FlYXNlbjRraiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRzozg4TCBXv6QU/giphy.gif",
+    spells: ["Phoenix Fire", "Elder Wand Strike", "Serpent Strike"],
   },
   {
     name: "VoldBot",
+    img:"https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNm4xMW84dXBuaGE2OHFhdXdnZzF5MnZnbGVxeG95a3d1dzhkYXBpOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/DEx5GZXKckaKk/giphy.gif",
+    staticImg:"https://upload.wikimedia.org/wikipedia/en/a/a3/Lordvoldemort.jpg",
     power: 98,
     defense: 85,
     spells: ["Avada Kedavra", "Horcrux Shield", "Serpent Strike"],
   },
+  {
+    name: "HermionaBot",
+    power: 89,
+    staticImg:"https://bloximages.chicago2.vip.townnews.com/tucson.com/content/tncms/assets/v3/editorial/c/1c/c1c30cf0-7e02-11e7-8808-1b9c7ccfc7d0/598cb51832d12.image.jpg?resize=1200%2C925",
+    img:"https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdm40cWY2eWNlNGNsOWV5c2tpeGQ2Zmx4c201dzNlaXIzdzF1MDJyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/11vJvF868vno7S/giphy.gif",
+    defense: 91,
+    spells: ["Time Turner", "Stupefy", "Alohomora"],
+  },
+  {
+    name: "SnapeBot",
+    power: 92,
+    staticImg:"https://i.insider.com/6789412d8951662c9f208aeb?width=700",
+    img:"https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcThkdmtlYnR3Y3FzdWNnd2l4ZzBlNHJxMWJ4bjk4b3V6cW05dDNiciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AisOYaOZdrS1i/giphy.gif",
+    defense: 90,
+    spells: ["Sectumsempra", "Occlumens Shield", "Poison Cloud"],
+  },
+  {
+    name: "DracoBot",
+    power: 86,
+    staticImg:"https://i2-prod.mylondon.news/whats-on/whats-on-news/article31799983.ece/ALTERNATES/s615/0_Undated-handout-photo-issued-by-BoneauBryan-Brown-of-Tom-Felton-as-Draco-Malfoy-in-Harry-Potter-and-the-Cursed-Child.jpg",
+    img:"https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExb3Zmd3NiOG8zemwzcDcweDhxMWhtMjBrajRxdzA5dGl3MjBuZmg0OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ygx8EYsdRkNpu/giphy.gif",
+    defense: 84,
+    spells: ["Serpensortia", "Expelliarmus", "Invisibility Mist"],
+  },
+  {
+    name: "LunaBot",
+    power: 87,
+    img:"https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnpsNW5xb3VwZHhuYmJseWxjNDFrcGtkNjJkanpnbXg5ZnAweXo5YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/m0Z1LPu6flQDS/giphy.gif",
+    staticImg:"https://contentful.harrypotter.com/usf1vwtuqyxm/7EZWkwOXSNzlnf5Vt1Clwq/abf4deae5f916a5a62a85dd4c2c0ff91/HP-F5-order-of-the-phoenix-luna-bridge-smiling-web-landscape?q=75&fm=jpg&w=2560",
+    defense: 95,
+    spells: ["Spectrespecs Beam", "Wit-Shield", "Levitation Charm"],
+  },
+  {
+    name: "SiriusBot",
+    power: 91,
+    staticImg:"https://contentful.harrypotter.com/usf1vwtuqyxm/1rDt6sbCaazd6HdREpDR89/1c0fef1570094aadd4fb87230218db07/sirius-black_2_1800x1248.png?q=75&fm=jpg&w=600&h=416&fit=pad",
+    img:"https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExa293dmNxMHQ5dXd5cjZzZ2Z2eXFqZGRhZmhjNWFnamRmbm1ocnZxMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/sphuNGBpAqY6c/giphy.gif",
+    defense: 89,
+    spells: ["Animagus Rage", "Fang Strike", "Loyalty Bond"],
+  },
+  {
+    name: "BellatrixBot",
+    power: 94,
+    staticImg:"https://i.insider.com/62421833a2e45b001950cb2c?width=800&format=jpeg&auto=webp",
+    img:"https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGo1aGRmeTVlNTV3cXB0b3MyZnpyaTg2bzJ5eWMyNGgxbmVlcDhvaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PnsQHKyp3APailXnMO/giphy.gif",
+    defense: 83,
+    spells: ["Cruciatus Curse", "Dark Web", "Blood Pact"],
+  },
+  {
+    name: "DobbyBot",
+    power: 79,
+    staticImg:"https://contentful.harrypotter.com/usf1vwtuqyxm/6miaYuD2i4wemokq8Q02Uo/ba922817407a667349ae64c8e334d3b6/Dobby_WB_F2_DobbyClickingFingersCastingSpell_Still_080615_Land.jpg?q=75&fm=jpg&w=2560",
+    img:"https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExazZlNzEyaTJpNGloZjU3cWZlOW85aTFkNDIxcGQ4b3RmcjBla291aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7zoOcZshec8nqdFKeG/giphy.gif",
+    defense: 98,
+    spells: ["Elf Blink", "Sock Blast", "Free Will"],
+  },
+  {
+    name: "MoodyBot",
+    power: 88,
+    staticImg:"https://static1.srcdn.com/wordpress/wp-content/uploads/2019/01/Mad-Eye-Moody-Teaching-in-Harry-Potter.jpg",
+    img:"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHk2YTJ5MmRhdHA5M3NjZjd1cGdncTRrOXhwdndha3J2OGdmdW52MCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JpkSHfHfn4KJqn6kHn/giphy.gif",
+    defense: 93,
+    spells: ["Constant Vigilance", "Polyjuice Shock", "Eye of Truth"],
+  },
 ];
+
 
 type GameState = "betting" | "dueling" | "result";
 
@@ -298,8 +369,8 @@ const Game: React.FC = () => {
         <AnimatePresence>
           {gameState === "dueling" && (
             <DuelAnimation
-              bot1={bots[0]}
-              bot2={bots[1]}
+              bot1={selectedBot}
+              bot2={bots.filter(bot => bot.name !== selectedBot?.name)[Math.floor(Math.random() * bots.length - 1)]}
               onComplete={handleDuelComplete}
             />
           )}

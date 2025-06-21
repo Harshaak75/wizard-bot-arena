@@ -12,9 +12,9 @@ const Footer: React.FC = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center space-x-2 text-purple-300">
-          <span className="font-lato">Powered by Ethereum Sepolia</span>
-          <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-xs font-bold">M</span>
+          <span className="font-lato">Powered by ALGONOVA</span>
+          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+            <span className="text-white text-xs font-bold">AN</span>
           </div>
         </div>
       </div>

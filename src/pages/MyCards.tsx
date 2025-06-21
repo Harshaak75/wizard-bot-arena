@@ -1,14 +1,16 @@
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useWeb3 } from "../hooks/useWeb3";
+import MagicCard from "../components/ui/MagicCard";
+import MagicalButton from "../components/ui/MagicalButton";
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useWeb3 } from '../hooks/useWeb3';
-import MagicCard from '../components/ui/MagicCard';
-import MagicalButton from '../components/ui/MagicalButton';
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants/contract";
+import Web3 from "web3";
 
 interface CardData {
   name: string;
   image: string;
-  rarity: 'Common' | 'Rare' | 'Epic' | 'Legendary';
+  rarity: "Common" | "Rare" | "Epic" | "Legendary";
   etherscanUrl?: string;
   ipfsUrl?: string;
   bot?: string;
@@ -21,36 +23,6 @@ const MyCards: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Mock card data for demonstration
-  const mockCards: CardData[] = [
-    {
-      name: "WizardBet Card - AlbusBot Victory",
-      image: "",
-      rarity: "Epic",
-      etherscanUrl: "https://sepolia.etherscan.io/tx/0x123...",
-      ipfsUrl: "https://ipfs.io/ipfs/QmExample1",
-      bot: "AlbusBot",
-      spell: "Phoenix Fire"
-    },
-    {
-      name: "WizardBet Card - VoldBot Triumph",
-      image: "",
-      rarity: "Legendary",
-      etherscanUrl: "https://sepolia.etherscan.io/tx/0x456...",
-      ipfsUrl: "https://ipfs.io/ipfs/QmExample2",
-      bot: "VoldBot",
-      spell: "Avada Kedavra"
-    },
-    {
-      name: "WizardBet Card - AlbusBot Win",
-      image: "",
-      rarity: "Rare",
-      etherscanUrl: "https://sepolia.etherscan.io/tx/0x789...",
-      ipfsUrl: "https://ipfs.io/ipfs/QmExample3",
-      bot: "AlbusBot",
-      spell: "Elder Wand Strike"
-    }
-  ];
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -60,20 +32,56 @@ const MyCards: React.FC = () => {
       setError(null);
 
       try {
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // In a real implementation, this would call:
-        // const tokenIds = await contract.getCardsByOwner(address);
-        // Then fetch metadata for each tokenId
-        
-        // For now, we'll show mock data if connected
-        setCards(mockCards);
-        
-        console.log('Fetched cards for address:', address);
+        // Initialize web3 and contract
+        const web3 = new Web3(window.ethereum);
+        const contract = new web3.eth.Contract(
+          CONTRACT_ABI as any,
+          CONTRACT_ADDRESS
+        );
+
+        console.log("1");
+
+        // Optional: get total number of tokens (if needed for fallback)
+        const totalSupply: any = await contract.methods.tokenCount().call();
+        const ownedTokenIds = [];
+
+        for (let tokenId = 1; tokenId <= totalSupply; tokenId++) {
+          const owner:any = await contract.methods.ownerOf(tokenId).call();
+          if (owner.toLowerCase() === address.toLowerCase()) {
+            ownedTokenIds.push(tokenId);
+          }
+        }
+
+        console.log("3");
+
+        // Fetch metadata for each token
+        const cardPromises = ownedTokenIds.map(async (tokenId: string) => {
+          const tokenURI: any = await contract.methods.tokenURI(tokenId).call();
+
+          // Fetch metadata from IPFS or URL
+          const response = await fetch(tokenURI);
+          const metadata = await response.json();
+
+          const spellAttr = metadata.attributes?.find(
+            (attr: any) => attr.trait_type === "Spell"
+          );
+
+          return {
+            name: metadata.name,
+            image: metadata.image,
+            rarity: "Rare", // or infer from power/defense
+            ipfsUrl: tokenURI,
+            etherscanUrl: `https://sepolia.etherscan.io/token/${CONTRACT_ADDRESS}?a=${tokenId}`,
+            bot: metadata.name.split("#")[0].trim(), // "Wizard Bot"
+            spell: spellAttr?.value || "Unknown",
+          };
+        });
+
+        const fetchedCards: any = await Promise.all(cardPromises);
+        setCards(fetchedCards);
       } catch (err) {
-        console.error('Error fetching cards:', err);
-        setError('Failed to load your cards. Please try again.');
+        console.error("Error fetching NFT cards:", err);
+        setError("Failed to load your cards. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -195,9 +203,13 @@ const MyCards: React.FC = () => {
                   No Cards Yet
                 </h2>
                 <p className="text-purple-200 font-lato text-lg mb-6 max-w-md mx-auto">
-                  You haven't won any duels yet! Start playing to earn magical NFT cards.
+                  You haven't won any duels yet! Start playing to earn magical
+                  NFT cards.
                 </p>
-                <MagicalButton onClick={() => window.location.href = '/game'} size="lg">
+                <MagicalButton
+                  onClick={() => (window.location.href = "/game")}
+                  size="lg"
+                >
                   🎮 Play Game
                 </MagicalButton>
               </motion.div>
@@ -219,24 +231,26 @@ const MyCards: React.FC = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-white">{cards.length}</div>
+                  <div className="text-2xl font-bold text-white">
+                    {cards.length}
+                  </div>
                   <div className="text-sm text-purple-300">Total Cards</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-gray-300">
-                    {cards.filter(c => c.rarity === 'Common').length}
+                    {cards.filter((c) => c.rarity === "Common").length}
                   </div>
                   <div className="text-sm text-gray-400">Common</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-blue-300">
-                    {cards.filter(c => c.rarity === 'Rare').length}
+                    {cards.filter((c) => c.rarity === "Rare").length}
                   </div>
                   <div className="text-sm text-blue-400">Rare</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-purple-300">
-                    {cards.filter(c => c.rarity === 'Epic').length}
+                    {cards.filter((c) => c.rarity === "Epic").length}
                   </div>
                   <div className="text-sm text-purple-400">Epic</div>
                 </div>

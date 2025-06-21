@@ -1,10 +1,11 @@
-
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 interface Bot {
   name: string;
   power: number;
+  img: string;
+  staticImg: string;
   defense: number;
   spells: string[];
 }
@@ -15,24 +16,37 @@ interface BotDisplayProps {
   onSelect: () => void;
 }
 
-const BotDisplay: React.FC<BotDisplayProps> = ({ bot, isSelected, onSelect }) => {
+const BotDisplay: React.FC<BotDisplayProps> = ({
+  bot,
+  isSelected,
+  onSelect,
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onSelect}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
         isSelected
-          ? 'border-yellow-400 bg-yellow-400/10 shadow-lg shadow-yellow-400/20'
-          : 'border-purple-500/30 bg-gray-900/50 hover:border-purple-400/50'
+          ? "border-yellow-400 bg-yellow-400/10 shadow-lg shadow-yellow-400/20"
+          : "border-purple-500/30 bg-gray-900/50 hover:border-purple-400/50"
       }`}
     >
       {/* Bot Avatar */}
-      <div className="text-center mb-4">
-        <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-3xl">
-          {bot.name === 'AlbusBot' ? '🧙‍♂️' : '🐍'}
+      <div className="text-center mb-6">
+        <div className="w-40 h-40 mx-auto mb-4 overflow-hidden rounded-2xl bg-gradient-to-br from-purple-700 to-blue-700 p-1 shadow-lg transition-transform duration-500 hover:scale-105 hover:shadow-[0_0_25px_rgba(138,43,226,0.8)]">
+          <img
+            src={isHovered ? bot.img : bot.staticImg}
+            alt={bot.name}
+            className="w-full h-full object-cover rounded-xl"
+          />
         </div>
-        <h3 className="font-cinzel font-bold text-xl text-white">{bot.name}</h3>
+        <h3 className="font-cinzel font-bold text-2xl text-yellow-300">
+          {bot.name}
+        </h3>
       </div>
 
       {/* Stats */}
@@ -51,7 +65,7 @@ const BotDisplay: React.FC<BotDisplayProps> = ({ bot, isSelected, onSelect }) =>
             <span className="text-white font-bold text-sm">{bot.power}</span>
           </div>
         </div>
-        
+
         <div className="flex justify-between items-center">
           <span className="text-purple-300 font-lato">Defense:</span>
           <div className="flex items-center space-x-2">
