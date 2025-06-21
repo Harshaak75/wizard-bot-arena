@@ -1,73 +1,83 @@
-# Welcome to your Lovable project
+# Wizard Bot Arena
 
-## Project info
+Wizard Bot Arena is a web-based dApp where users can participate in magical bot duels, place strategic bets, and mint exclusive NFT cards to commemorate their victories. The project leverages Ethereum smart contracts and integrates with MetaMask for wallet connectivity and NFT minting.
 
-**URL**: https://lovable.dev/projects/d6ca2508-9e41-427c-b4e8-88fa4196dc58
+## Features
 
-## How can I edit this code?
+- **Connect Wallet:** Securely connect your Ethereum wallet using MetaMask. The app will prompt for permission when you click "Connect Wallet" and can be disconnected at any time.
+- **Smart Betting:** Place bets on your favorite magical bots and witness duels in real time.
+- **NFT Minting:** Mint unique NFT cards as proof of your victories. Each card is stored on-chain and can be viewed in your personal collection.
+- **NFT Gallery:** View all the NFT cards you own, complete with rarity, spell, and bot details.
+- **Seamless UX:** Smooth animations, loading states, and clear feedback for wallet and blockchain interactions.
 
-There are several ways of editing your application.
+## Getting Started
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d6ca2508-9e41-427c-b4e8-88fa4196dc58) and start prompting.
+- [Node.js](https://nodejs.org/) (v16+ recommended)
+- [MetaMask](https://metamask.io/) browser extension installed
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-username/wizard-bot-arena.git
+   cd wizard-bot-arena
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+3. **Start the development server:**
+   ```sh
+   npm run dev
+   ```
+   The app will be available at [http://localhost:5173](http://localhost:5173).
 
-Follow these steps:
+### Connecting Your Wallet
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. Open the app in your browser.
+2. Click the **"Connect Wallet"** button.
+3. MetaMask will prompt you to connect your wallet. Approve the connection.
+4. Once connected, your wallet address will be used for all blockchain interactions.
+5. You can disconnect your wallet at any time using the disconnect option.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Minting NFT Cards
 
-# Step 3: Install the necessary dependencies.
-npm i
+- After winning a duel, you’ll be prompted to mint a commemorative NFT card.
+- Confirm the mint transaction in MetaMask.
+- Once minted, your NFT card will appear in the **My Cards** section, complete with details and links to view on Etherscan and IPFS.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Viewing Your NFT Collection
 
-**Edit a file directly in GitHub**
+- Navigate to the **My Cards** page.
+- All NFT cards owned by your connected wallet will be displayed.
+- If you have no cards, you’ll be prompted to play and win duels to earn your first NFT.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Project Structure
 
-**Use GitHub Codespaces**
+- **src/pages/Game.tsx**: Main game logic, betting, and duel flow.
+- **src/pages/MyCards.tsx**: Fetches and displays your NFT card collection.
+- **src/components/game/MintCardModal.tsx**: Handles NFT minting modal and logic.
+- **src/contexts/Web3Context.tsx**: Manages wallet connection state and logic.
+- **src/constants/contract.ts**: Contains contract ABI and address.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Blockchain Details
 
-## What technologies are used for this project?
+- **Network:** Sepolia Testnet (default)
+- **Smart Contract:** ERC-721 NFT contract for minting and managing cards
 
-This project is built with:
+## Notes
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- Make sure you have Sepolia ETH in your MetaMask wallet for test transactions.
+- All NFT metadata is stored on IPFS and can be viewed via the provided links.
 
-## How can I deploy this project?
+## **✨ Created By**
 
-Simply open [Lovable](https://lovable.dev/projects/d6ca2508-9e41-427c-b4e8-88fa4196dc58) and click on Share -> Publish.
+# **ALOGONOVA TEAM**
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Happy dueling and minting!
