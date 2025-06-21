@@ -34,7 +34,7 @@ Wizard Bot Arena is a web-based dApp where users can participate in magical bot 
    ```sh
    npm run dev
    ```
-   The app will be available at [http://localhost:5173](http://localhost:5173).
+   The app will be available at [http://localhost:8080](http://localhost:8080).
 
 ### Connecting Your Wallet
 
